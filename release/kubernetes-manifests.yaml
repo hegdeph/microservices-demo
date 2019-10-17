@@ -192,9 +192,9 @@ kind: Deployment
 metadata:
   name: %name%-%version% 
 spec:
-  #selector:
-  #  matchLabels:
-  #    app: frontend
+  selector:
+    matchLabels:
+      app: frontend
   template:
     metadata:
       labels:
