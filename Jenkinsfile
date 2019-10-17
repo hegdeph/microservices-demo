@@ -1,10 +1,10 @@
 pipeline {
 
   environment {
-    PROJECT = "core-feat-241406"
+    PROJECT = "hipster"
     FE_SVC_NAME = "${APP_NAME}-frontend"
     CLUSTER = "cicd-infra"
-    CLUSTER_ZONE = "asia-southeast1-a"
+    CLUSTER_ZONE = "us-central1-a"
     JENKINS_CRED = "${PROJECT}"
   }
 
@@ -44,7 +44,10 @@ stages {
 	stage('Build and push image with Container Builder') {
       		steps {
         		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER  ."
+				sh("sed -i.bak 's#%name%#frontend#' ./release/kubernetes-manifests.yaml")
+    				sh("sed -i.bak 's#%version%#$BUILD_NUMBER#' ./release/kubernetes-manifests.yaml")
+    				sh("cat ./release/kubernetes-manifests.yaml")	
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER _BUILD_NUMBER=$BUILD_NUMBER ."
         		}
       		}
     	}
