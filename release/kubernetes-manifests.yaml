@@ -195,6 +195,7 @@ spec:
   selector:
     matchLabels:
       app: frontend
+      version: %version% 
   template:
     metadata:
       labels:
