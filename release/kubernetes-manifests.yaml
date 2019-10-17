@@ -190,20 +190,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: %name%-%version% 
 spec:
-  selector:
-    matchLabels:
-      app: frontend
+  #selector:
+  #  matchLabels:
+  #    app: frontend
   template:
     metadata:
       labels:
         app: frontend
+        version: %version% 
     spec:
       containers:
         - name: server
           #image: gcr.io/google-samples/microservices-demo/frontend:v0.1.2
-          image: frontend
+          image: frontend:%version%
           ports:
           - containerPort: 8080
           readinessProbe:
