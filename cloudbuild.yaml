@@ -17,7 +17,7 @@ steps:
   - '-c'
   - > 
     gcloud container clusters get-credentials --zone=$_ZONE $_CLUSTER;
-    export VERSION=$_BUILD_NUMBER
+    export VERSION=$_BUILD_NUMBER;
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$PROJECT_ID;
 
 # Add more power, and more time, for heavy Skaffold build
