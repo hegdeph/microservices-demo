@@ -44,7 +44,7 @@ stages {
 	stage('Build and push image with Container Builder') {
       		steps {
         		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUESTER  ."
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER  ."
         		}
       		}
     	}
