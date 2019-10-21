@@ -21,6 +21,7 @@ steps:
     sed -i.bak 's#%name%#frontend#' ./release/kubernetes-manifests.yaml;
     sed -i.bak 's#%version%#v$_BUILD_NUMBER#' ./release/kubernetes-manifests.yaml;
     cat ./release/kubernetes-manifests.yaml;
+    echo gcr.io/$_PROJECT_ID;
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$_PROJECT_ID;
     #skaffold run -f=skaffold.yaml --default-repo=gcr.io/core-feat-241406
 
