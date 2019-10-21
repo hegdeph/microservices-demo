@@ -17,7 +17,7 @@ steps:
   - '-c'
   - > 
     gcloud container clusters get-credentials --zone=$_ZONE $_CLUSTER;
-    export VERSION=$_BUILD_NUMBER;
+    export VERSION=v$_BUILD_NUMBER;
     sed -i.bak 's#%name%#frontend#' ./release/kubernetes-manifests.yaml;
     sed -i.bak 's#%version%#v$_BUILD_NUMBER#' ./release/kubernetes-manifests.yaml;
     cat ./release/kubernetes-manifests.yaml;
