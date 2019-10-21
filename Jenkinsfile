@@ -41,11 +41,25 @@ spec:
 }
 }
 stages {
-	stage('Build and push image with Container Builder') {
+	stage('Build and and deploy to staging') {
+                when {
+                	branch 'staging'
+            	}
       		steps {
         		container('gcloud') {
     				sh("cat ./release/kubernetes-manifests.yaml")	
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER ."
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER, --NAMESPACE="staging" ."
+        		}
+      		}
+    	}
+	stage('Build and and deploy to production') {
+                when {
+                	branch 'production'
+            	}
+      		steps {
+        		container('gcloud') {
+    				sh("cat ./release/kubernetes-manifests.yaml")	
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER, --NAMESPACE="production" ."
         		}
       		}
     	}
