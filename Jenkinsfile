@@ -3,7 +3,7 @@ pipeline {
   environment {
     PROJECT = "core-feat-241406"
     FE_SVC_NAME = "${APP_NAME}-frontend"
-    CLUSTER = "hipster"
+    CLUSTER = "hipster2"
     CLUSTER_ZONE = "us-central1-a"
     JENKINS_CRED = "${PROJECT}"
   }
