@@ -44,8 +44,6 @@ stages {
 	stage('Build and push image with Container Builder') {
       		steps {
         		container('gcloud') {
-				sh("sed -i.bak 's#%name%#frontend#' ./release/kubernetes-manifests.yaml")
-    				sh("sed -i.bak 's#%version%#$BUILD_NUMBER#' ./release/kubernetes-manifests.yaml")
     				sh("cat ./release/kubernetes-manifests.yaml")	
           			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER ."
         		}
