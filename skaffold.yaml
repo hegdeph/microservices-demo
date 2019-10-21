@@ -46,11 +46,11 @@ build:
     #gitCommit: {}
     envTemplate:
       template: "{{.IMAGE_NAME}}:{{.VERSION}}"
+      #template: "{{.IMAGE_NAME}}:v20"
 deploy:
   kubectl:
     manifests:
-    #- ./kubernetes-manifests/**.yaml
-    - ./release/**.yaml
+    - ./release/kubernetes-manifests.yaml
 profiles:
 # "travis-ci" profile is used to build the images without
 # pushing them.
