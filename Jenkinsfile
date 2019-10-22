@@ -54,7 +54,7 @@ stages {
     	}
 	stage('Build and and deploy to production') {
                 when {
-                	branch 'production'
+                	branch 'master'
             	}
       		steps {
         		container('gcloud') {
