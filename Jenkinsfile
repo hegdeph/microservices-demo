@@ -48,7 +48,7 @@ stages {
       		steps {
         		container('gcloud') {
     				sh("cat ./release/kubernetes-manifests.yaml")	
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER, --NAMESPACE="staging" ."
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE=staging ."
         		}
       		}
     	}
@@ -59,7 +59,7 @@ stages {
       		steps {
         		container('gcloud') {
     				sh("cat ./release/kubernetes-manifests.yaml")	
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER, --NAMESPACE="production" ."
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE='production' ."
         		}
       		}
     	}
