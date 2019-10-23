@@ -23,6 +23,7 @@ steps:
     cat ./release/kubernetes-manifests.yaml;
     echo gcr.io/$_PROJECT_ID;
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$_PROJECT_ID --namespace $_NAMESPACE;
+
     #skaffold run -f=skaffold.yaml --default-repo=gcr.io/core-feat-241406
 
 # Add more power, and more time, for heavy Skaffold build
