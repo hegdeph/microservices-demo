@@ -23,7 +23,7 @@ namespace cartservice
 {
     public class E2ETests
     {
-        private static string serverHostName = "localhost";
+        private static string serverHostName = "35.223.61.121";
         private static int port = 7070;
 
         [Fact]
