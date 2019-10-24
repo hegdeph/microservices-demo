@@ -87,7 +87,7 @@ stages {
                 	branch 'staging'
             	}
       		steps {
-        		(container('gcloud') {
+        		container('gcloud') {
           			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild-deploy.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE=staging ."
         		}
       		}
