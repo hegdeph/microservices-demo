@@ -77,46 +77,26 @@ stages {
   		}
         }
 
-	stage('Staging Build') {
+	stage('Staging Buildi& Deploy') {
                 when {
                 	branch 'staging'
             	}
       		steps {
         		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild-build.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE=staging ."
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE=staging ."
         		}
       		}
     	}
-	stage('Staging Deploy') {
-                when {
-                	branch 'staging'
-            	}
-      		steps {
-        		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild-deploy.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE=staging ."
-        		}
-      		}
-    	}
-	stage('Build Production') {
+	stage('Production Build & Deploy') {
                 when {
                 	branch 'master'
             	}
       		steps {
         		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild-build.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE='production' ."
+          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE='production' ."
         		}
       		}
     	}
-	stage('Deploy Production') {
-                when {
-                	branch 'master'
-            	}
-      		steps {
-        		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild-deploy.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE='production' ."
-        		}
-      		}
-
 }
 }
 }
