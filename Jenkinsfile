@@ -59,7 +59,7 @@ stages {
         		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'hegdeph-github-id', url: 'https://github.com/hegdeph/microservices-demo.git']]])
         
         		withSonarQubeEnv('Sonar-Scanner') {
-            		sh "${scannerHome}/bin/sonar-scanner -Dsonar.java.binaries=. -Dsonar.login='f63a656d53496b43445fdd7cec0553e816ce7116' -Dsonar.projectKey=hipster -Dsonar.sources='./src/frontend, ./src/shippingservice'"
+            		sh "${scannerHome}/bin/sonar-scanner -Dsonar.java.binaries=. -Dsonar.login='f63a656d53496b43445fdd7cec0553e816ce7116' -Dsonar.projectKey=hipster -Dsonar.sources='./src/productcatalogservice'"
         	}
         
     		}
