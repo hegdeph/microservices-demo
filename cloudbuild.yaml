@@ -22,6 +22,7 @@ steps:
     sed -i.bak 's#%version%#v$_BUILD_NUMBER#' ./release/kubernetes-manifests.yaml;
     cat ./release/kubernetes-manifests.yaml;
     cat src/frontend/templates/home.html;
+
     echo gcr.io/$_PROJECT_ID;
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$_PROJECT_ID --namespace $_NAMESPACE;
 
