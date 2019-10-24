@@ -32,6 +32,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: dotnet
+    image: mcr.microsoft.com/dotnet/core/sdk:2.1
+    command:
+    - cat
+    tty: true    
   - name: kubectl
     image: gcr.io/cloud-builders/kubectl
     command:
