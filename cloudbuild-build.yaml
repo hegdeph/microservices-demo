@@ -1,0 +1,32 @@
+# This configuration file is used to build and deploy the app into a 
+# GKE cluster using Google Cloud Build.
+#
+# PREREQUISITES:
+# - Cloud Build service account must have role: "Kubernetes Engine Developer"
+
+# USAGE:
+# GCP zone and GKE target cluster must be specified as substitutions
+# Example invocation:
+# `gcloud builds submit --config=cloudbuild.yaml --substitutions=_ZONE=us-central1-b,_CLUSTER=demo-app-staging .`
+
+steps:
+- id: 'Deploy application to cluster'
+  name: 'gcr.io/k8s-skaffold/skaffold:v0.20.0'
+  entrypoint: 'bash'
+  args: 
+  - '-c'
+  - > 
+    gcloud container clusters get-credentials --zone=$_ZONE $_CLUSTER;
+    export VERSION=v$_BUILD_NUMBER;
+    #sed -i.bak 's#%name%#frontend#' ./release/kubernetes-manifests.yaml;
+    #sed -i.bak 's#%version%#v$_BUILD_NUMBER#' ./release/kubernetes-manifests.yaml;
+    #cat ./release/kubernetes-manifests.yaml;
+    echo gcr.io/$_PROJECT_ID;
+    skaffold run -f=skaffold-build.yaml --default-repo=gcr.io/$_PROJECT_ID --namespace $_NAMESPACE;
+
+    #skaffold run -f=skaffold.yaml --default-repo=gcr.io/core-feat-241406
+
+# Add more power, and more time, for heavy Skaffold build
+timeout: '3600s'
+options:
+  machineType: 'N1_HIGHCPU_8'
