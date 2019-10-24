@@ -47,10 +47,10 @@ build:
     envTemplate:
       template: "{{.IMAGE_NAME}}:{{.VERSION}}"
       #template: "{{.IMAGE_NAME}}:v20"
-#deploy:
-#  kubectl:
-#    manifests:
-#    - ./release/kubernetes-manifests.yaml
+deploy:
+  kubectl:
+    manifests:
+    - ./k8s/*.yaml
 profiles:
 # "travis-ci" profile is used to build the images without
 # pushing them.
