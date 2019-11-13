@@ -82,15 +82,13 @@
           <suiteXmlFiles>
             <suiteXmlFile>testng.xml</suiteXmlFile>
           </suiteXmlFiles>
-          <systemPropertyVariables>
-            <application.properties>/application.properties</application.properties>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
         <configuration>
+	<forkMode>never</forkMode>
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
