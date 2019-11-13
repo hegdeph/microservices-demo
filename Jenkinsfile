@@ -55,9 +55,9 @@ stages {
            
             steps{
 			    dir('selenium-tests'){
-				
-				sh 'apt-get update'
-				sh 'apt-get install -y maven'	
+				sh 'uname -a'			
+				sh 'yum update'
+				sh 'yum install -y maven'	
                    		sh 'mvn  clean test'
 			    }
                 
