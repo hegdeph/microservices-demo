@@ -57,7 +57,7 @@ stages {
 		    container('mvn'){
 			    dir('selenium-tests'){
 				
-                   		 sh 'mvn  test'
+                   		 sh 'mvn  clean test'
 			    }
 		    }
                 
