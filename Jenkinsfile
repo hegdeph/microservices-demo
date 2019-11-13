@@ -54,12 +54,12 @@ stages {
   stage('run unit test'){
            
             steps{
+			container('mvn'){
 			    dir('selenium-tests'){
 				sh 'uname -a'			
-				sh 'yum update'
-				sh 'yum install -y maven'	
                    		sh 'mvn  clean test'
 			    }
+			}
                 
             
             }
