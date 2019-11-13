@@ -42,60 +42,25 @@ spec:
     command:
     - cat
     tty: true
+  - name: mvn
+    image: gcr.io/cloud-builders/mvn
+    command:
+    - cat
+    tty: true
 """
 }
 }
 stages {
-        stage('Static Code analysis') {
-        when{
-        	branch 'staging'
+  stage('run unit test'){
+           
+            steps{
+		    container('mvn'){
+                  	 sh 'cd selenium-tests'	           
+                   	 sh 'mvn  test'
+		    }
+                
+            
+            }
         }
-
-    	environment {
-        	scannerHome = tool 'HipsterSonarScanner'
-    	}
-
-    		steps {
-        		checkout([$class: 'GitSCM', branches: [[name: '*/staging']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'hegdeph-github-id', url: 'https://github.com/hegdeph/microservices-demo.git']]])
-        
-        		withSonarQubeEnv('Sonar-Scanner') {
-            		sh "${scannerHome}/bin/sonar-scanner -Dsonar.java.binaries=. -Dsonar.login='f63a656d53496b43445fdd7cec0553e816ce7116' -Dsonar.projectKey=hipster -Dsonar.sources='./src/productcatalogservice'"
-        	}
-        
-    		}
-    	}
-        
-	stage('Unit Test'){
-   		steps{
-    			container('dotnet') {
-                  		script {
-                            		sh 'dotnet --info'
-                            		/*sh 'dotnet test tests/cartservice/cartservice.tests.csproj'*/
-                            		sh 'echo Tests successful !!'
-                          	}
-                        }
-  		}
-        }
-
-	stage('Staging Buildi& Deploy') {
-                when {
-                	branch 'staging'
-            	}
-      		steps {
-        		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE=staging ."
-        		}
-      		}
-    	}
-	stage('Production Build & Deploy') {
-                when {
-                	branch 'master'
-            	}
-      		steps {
-        		container('gcloud') {
-          			sh "PYTHONUNBUFFERED=1 gcloud builds submit --config=cloudbuild.yaml --substitutions=_PROJECT_ID=$PROJECT,_ZONE=$CLUSTER_ZONE,_CLUSTER=$CLUSTER,_BUILD_NUMBER=$BUILD_NUMBER,_NAMESPACE='production' ."
-        		}
-      		}
-    	}
 }
 }
