@@ -55,7 +55,10 @@ stages {
            
             steps{
 		    container('mvn'){
-                  	 sh 'cd selenium-tests'	           
+			 sh 'pwd'
+			 sh 'ls -lrt'   
+                  	 sh 'cd selenium-tests'
+			 sh 'pwd'   
                    	 sh 'mvn  test'
 		    }
                 
