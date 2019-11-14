@@ -55,11 +55,9 @@ stages {
            
             steps{
 			container('mvn'){
-			    dir('selenium-tests'){
 				sh 'uname -a'			
-                   		sh 'mvn  clean test'
+                   		sh 'mvn  -f selenium-tests/pom.xml clean test'
 			    }
-			}
                 
             
             }
