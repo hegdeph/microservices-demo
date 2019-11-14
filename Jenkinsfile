@@ -56,6 +56,7 @@ stages {
             steps{
 			container('mvn'){
 				sh 'uname -a'			
+				sh 'mvn --version'
                    		sh 'mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml test'
 			    }
                 
