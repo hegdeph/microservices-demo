@@ -92,14 +92,14 @@ public class HipsterTest {
 	@BeforeTest
 	public void beforeTest() throws MalformedURLException {
 
-		capabillities = DesiredCapabilities.firefox();
+		capabillities = DesiredCapabilities.chrome();
 
 		/** URL is the selenium hub URL here **/
 		try{
 		//driver = new RemoteWebDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
 		driver = WebDriverPool.DEFAULT.getDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
 	
-		capabillities.setBrowserName("firefox");
+		//capabillities.setBrowserName("firefox");
 		wait = new WebDriverWait(driver, 12000);
 
 		}
