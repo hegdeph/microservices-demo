@@ -19,6 +19,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import ru.stqa.selenium.factory.WebDriverPool;
 
 public class HipsterTest {
 	private WebDriver driver;
@@ -95,7 +96,8 @@ public class HipsterTest {
 
 		/** URL is the selenium hub URL here **/
 		try{
-		driver = new RemoteWebDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
+		//driver = new RemoteWebDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
+		driver = WebDriverPool.DEFAULT.getDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
 	
 		capabillities.setBrowserName("firefox");
 		wait = new WebDriverWait(driver, 12000);
