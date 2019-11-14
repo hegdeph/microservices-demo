@@ -90,7 +90,7 @@
         <configuration>
 	<forkMode>never</forkMode>
           <source>1.11</source>
-          <target>1.1111111111111111111111</target>
+          <target>1.11</target>
         </configuration>
       </plugin>
     </plugins>
