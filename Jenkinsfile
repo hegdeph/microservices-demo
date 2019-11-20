@@ -59,7 +59,8 @@ stages {
            
             steps{
 			container('kubectl'){
-				
+				env.UNIQUE = sh(returnStdout: true, script: 'uuidgen').trim()
+				sh 'echo $UNIQUE'
 				sh 'export MASTER_NAME=$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")'			
 				sh 'echo \$MASTER_NAME'	
 				sh 'export SERVER_IPS=$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ",")'
