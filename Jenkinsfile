@@ -57,6 +57,8 @@ stages {
 			container('kubectl'){
 				sh 'export MASTER_NAME=$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")'			
 				sh 'echo $MASTER_NAME'	
+				sh "export SERVER_IPS=$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath='{.items[*].status.podIP}' | tr ' ' ',')"
+				sh "echo $SERVER_IPS"
 			    }
                 
             
