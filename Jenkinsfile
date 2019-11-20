@@ -55,7 +55,20 @@ spec:
 }
 }
 stages {
-  stage('run unit test'){
+stage('functional test'){
+
+            steps{
+                        container('mvn'){
+                                sh 'uname -a'
+                                sh 'mvn --version'
+                                sh 'mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml test'
+                                sh 'ls -lrt selenium-tests/target/test-classes'
+                            }
+
+
+            }
+        }
+  stage('performance test'){
            
             steps{
 			container('kubectl'){
