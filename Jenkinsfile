@@ -55,10 +55,8 @@ stages {
            
             steps{
 			container('mvn'){
-				sh 'uname -a'			
-				sh 'mvn --version'
-                   		sh 'mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml test'
-				sh 'ls -lrt selenium-tests/target/test-classes'
+				sh 'export MASTER_NAME=$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")'			
+				sh 'echo $MASTER_NAME'	
 			    }
                 
             
