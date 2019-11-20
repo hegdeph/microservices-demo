@@ -60,8 +60,8 @@ stages {
             steps{
 			container('kubectl'){
 				script{
-					MASTER_NAME=sh(script:'$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")',returnStdout: true)			
-					SERVER_IPS=sh(script:'$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ",")',returnStdout: true)
+					MASTER_NAME="sh(script:'$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")',returnStdout: true)"			
+					SERVER_IPS="sh(script:'$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ",")',returnStdout: true)"
 				}
 				sh 'kubectl cp sample.jmx ${MASTER_NAME}:'
 				sh 'kubectl exec -it ${MASTER_NAME} -- jmeter -n -t sample.jmx -R ${SERVER_IPS} -l log.jtl'
