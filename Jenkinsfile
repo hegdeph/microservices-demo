@@ -56,13 +56,15 @@ spec:
 }
 stages {
   stage('run unit test'){
-           
-            steps{
-			container('kubectl'){
 				environment {
+			container('kubectl'){
                JENKINS_PATH = sh(script: 'pwd', , returnStdout: true).trim()
 		MASTER_NAME = sh(script: '$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")', returnStdout: true)
            }
+		}
+           
+            steps{
+			container('kubectl'){
 		echo "PATH=${JENKINS_PATH}"
 		echo "${MASTER_NAME}"
 				sh 'export MASTER_NAME=$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")'			
