@@ -1,3 +1,7 @@
+
+  def MASTER_NAME
+  def SERVER_IPS
+
 pipeline {
 
   environment {
@@ -7,8 +11,6 @@ pipeline {
     CLUSTER_ZONE = "us-central1-a"
     JENKINS_CRED = "${PROJECT}"
   }
-  def MASTER_NAME
-  def SERVER_IPS
 
   agent {
     kubernetes {
