@@ -7,6 +7,8 @@ pipeline {
     CLUSTER_ZONE = "us-central1-a"
     JENKINS_CRED = "${PROJECT}"
   }
+  def MASTER_NAME
+  def SERVER_IPS
 
   agent {
     kubernetes {
@@ -55,13 +57,11 @@ stages {
            
             steps{
 			container('kubectl'){
-				sh 'export MASTER_NAME=$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}")'			
-				sh 'echo ${MASTER_NAMEi}'	
-				sh 'export SERVER_IPS=$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ",")'
-				sh 'echo ${SERVER_IPSi}'
-				sh 'kubectl cp sample.jmx ${MASTER_NAMEi}:'
+				MASTER_NAME=sh(script:"$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}"),returnStdout: true,)			
+				SERVER_IPS=sh(script:"$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ","),returnStdout: true,)
+				sh 'kubectl cp sample.jmx ${MASTER_NAME}:'
 				sh 'kubectl exec -it ${MASTER_NAME} -- jmeter -n -t sample.jmx -R ${SERVER_IPS} -l log.jtl'
-				sh 'kubectl cp $MASTER_NAME:log.jtl ./log.jtl'
+				sh 'kubectl cp ${MASTER_NAME}:log.jtl ./log.jtl'
 				sh 'cat log.jtl'
 			    }
                 
