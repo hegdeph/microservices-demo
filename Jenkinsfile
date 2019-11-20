@@ -59,8 +59,8 @@ stages {
            
             steps{
 			container('kubectl'){
-				sh 'kubectl cp sample.jmx \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}"):'
-				sh 'kubectl exec -it \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -- jmeter -n -t sample.jmx -R \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -l log.jtl'
+				sh 'kubectl cp sample.jmx \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}"):/jmeter'
+				sh 'kubectl exec -it \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -- jmeter -n -t /jmeter/sample.jmx -R \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -l log.jtl'
 				sh 'kubectl cp \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}"):log.jtl ./log.jtl'
 				sh 'cat log.jtl'
                 
