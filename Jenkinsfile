@@ -55,7 +55,20 @@ spec:
 }
 }
 stages {
-stage('functional test'){
+
+stage('Unit Test'){
+   		steps{
+    			container('dotnet') {
+                  		script {
+                            		sh 'dotnet --info'
+                            		sh 'dotnet test tests/cartservice/cartservice.tests.csproj'
+                            		sh 'echo Tests successful !!'
+                          	}
+                        }
+  		}
+        }
+
+/*stage('functional test'){
 
             steps{
 
@@ -111,5 +124,7 @@ script {
             }
         }
 }
+*/
+
 }
 }
