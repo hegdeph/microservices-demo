@@ -10,7 +10,7 @@ pipeline {
     PROJECT = "jovial-coral-242011"
     FE_SVC_NAME = "${APP_NAME}-frontend"
     CLUSTER = "application-infra"
-    CLUSTER_ZONE = "us-east1-a"
+    CLUSTER_ZONE = "us-east1-b"
     JENKINS_CRED = "${PROJECT}"
     
   }
@@ -64,7 +64,7 @@ stages {
 
  stage('Static Code analysis') {
         when{
-          branch 'staging'
+          branch 'master'
         }
 
         environment {
@@ -149,7 +149,7 @@ stage('functional test'){
                         container('mvn'){
                                 sh 'uname -a'
                                 sh 'mvn --version'
-                                sh 'mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml -DTARGET_URL="${FRONTEND_ADDRESS}" -DSELENIUM_GRID_URL="${SELENIUM_GRID_ADDRESS}" test'
+                                sh "mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml -DTARGET_URL=${FRONTEND_ADDRESS} -DSELENIUM_GRID_URL=${SELENIUM_GRID_ADDRESS} test"
                                 sh 'ls -lrt selenium-tests/target/test-classes'
                             }
 
@@ -161,7 +161,7 @@ stage('functional test'){
             steps{
 			container('kubectl'){
 
-        sh 'sed -i "s/@@target_address@@/"${"FRONTEND_ADDRESS"}/" sample.jmx'
+        sh "sed -i 's/@@target_address@@/${FRONTEND_ADDRESS}/' sample.jmx"
 				sh 'kubectl cp sample.jmx \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}"):/jmeter'
 				sh 'kubectl exec -it \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -- rm -f *.jtl'
 				sh 'kubectl exec -it \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -- jmeter -n -t /jmeter/sample.jmx -R \$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ",") -l log.jtl'
@@ -176,3 +176,4 @@ stage('functional test'){
 
 }
 }
+
