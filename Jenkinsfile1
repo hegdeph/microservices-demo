@@ -27,7 +27,7 @@ labels:
   component: ci
 spec:
   # Use service account that can deploy to all namespaces
-  serviceAccountName: masked-terrier-jenkins
+  serviceAccountName: masked-terrier-jenkins-slave
   containers:
   - name: golang
     image: golang:1.10
