@@ -161,7 +161,7 @@ stage('functional test'){
             steps{
 			container('kubectl'){
 
-        sh 'sed -i 's/@@target_address@@/"${"FRONTEND_ADDRESS"}/' sample.jmx'
+        sh 'sed -i "s/@@target_address@@/"${"FRONTEND_ADDRESS"}/" sample.jmx'
 				sh 'kubectl cp sample.jmx \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}"):/jmeter'
 				sh 'kubectl exec -it \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -- rm -f *.jtl'
 				sh 'kubectl exec -it \$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath="{.items[*].metadata.name}") -- jmeter -n -t /jmeter/sample.jmx -R \$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath="{.items[*].status.podIP}" | tr " " ",") -l log.jtl'
