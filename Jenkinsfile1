@@ -96,7 +96,7 @@ stages {
           branch 'master'
         }
               steps{
-                    container('gcloud') {
+                    container('dotnet') {
                         script {
                                   sh 'dotnet --info'
                                   sh 'dotnet test tests/cartservice/cartservice.tests.csproj'
