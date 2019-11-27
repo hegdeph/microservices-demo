@@ -28,7 +28,7 @@ public class HipsterTest {
 
 	@Test
 	public void f() {
-		driver.get("http://35.238.163.103");
+		driver.get("http://"+System.getProperty("TARGET_URL"));
 		String title = driver.getTitle();
 		System.out.println(title);
 		List<WebElement> anchors = driver.findElements(By.tagName("a"));
@@ -97,7 +97,7 @@ public class HipsterTest {
 		/** URL is the selenium hub URL here **/
 		try{
 		//driver = new RemoteWebDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
-		driver = WebDriverPool.DEFAULT.getDriver(new URL("http://34.87.56.178:4444/wd/hub"), capabillities);
+		driver = WebDriverPool.DEFAULT.getDriver(new URL("http://"+System.getProperty("SELENIUM_GRID_URL") +":4444/wd/hub"), capabillities);
 	
 		//capabillities.setBrowserName("firefox");
 		wait = new WebDriverWait(driver, 12000);
