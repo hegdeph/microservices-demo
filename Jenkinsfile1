@@ -135,31 +135,40 @@ pipeline {
           }
         }
     }
-
+    
     stage('Functional Testing'){
 
-      steps{
+     steps{
         
         container('kubectl'){
-          
-          withKubeConfig([credentialsId: 'kube-token-application-infra',
-                          serverUrl: 'https://34.73.114.12',
-                          clusterName: 'application-infra',
-                          namespace: 'default'
-                        ]){
-                            sh 'kubectl config view'
-                            
 
                             script{
 
-				if("${GIT_BRANCH}" == "staging")
-					sh 'kubectl get svc frontend-external -n staging   -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'	
-				else		
-                            		sh 'kubectl get svc frontend-external -n production   -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'
-                              FRONTEND_ADDRESS = readFile('front_end_address')
+								if("${GIT_BRANCH}" == "staging"){
+
+									withKubeConfig([credentialsId: 'kube-token-staging',
+                         			 	serverUrl: 'https://34.73.114.12',
+                        			  	clusterName: 'application-infra',
+                       				]){
+
+										sh 'kubectl get svc frontend-external -n staging -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'	
+									}
+								}
+								else{
+
+									withKubeConfig([credentialsId: 'kube-token-production',
+                         			 	serverUrl: 'https://34.73.114.12',
+                        			  	clusterName: 'application-infra',
+                       				]){
+                            		
+                    						sh 'kubectl get svc frontend-external -n production  -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'
+                    				}
+                    			}			
+
+                              FRONTEND_ADDRESS = readFile('front_end_address') 
                             }
                             echo "${FRONTEND_ADDRESS}"
-                          }
+                          
         }
         container('kubectl'){
 
@@ -171,14 +180,8 @@ pipeline {
 
           echo "${SELENIUM_GRID_ADDRESS}"
         }
-
-        container('mvn'){
-            
-          sh 'mvn --version'
-          sh "mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml -DTARGET_URL=${FRONTEND_ADDRESS} -DSELENIUM_GRID_URL=${SELENIUM_GRID_ADDRESS} test"
-        }
-      }
-    }
+     }
+  }	
 
     stage('Performance Testing'){
 
