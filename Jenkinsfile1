@@ -75,7 +75,7 @@ pipeline {
         steps {
 
             withSonarQubeEnv('Sonar-Scanner') {
-                sh "${scannerHome}/bin/sonar-scanner -Dsonar.java.binaries=. -Dsonar.login='905737de1d46d4eeca891c2936ee6bc3a7a70af7' -Dsonar.projectKey=hipster -Dsonar.sources='./src/productcatalogservice'"
+                sh "${scannerHome}/bin/sonar-scanner -Dsonar.java.binaries=. -Dsonar.login='905737de1d46d4eeca891c2936ee6bc3a7a70af7' -Dsonar.projectKey=Hipster -Dsonar.sources='./src/productcatalogservice'"
             }
 
         }
