@@ -180,6 +180,11 @@ pipeline {
 
           echo "${SELENIUM_GRID_ADDRESS}"
         }
+	container('mvn'){
+            
+          sh 'mvn --version'
+          sh "mvn  -f selenium-tests/pom.xml -DsuiteXmlFile=selenium-tests/src/test/resources/testng.xml -DTARGET_URL=${FRONTEND_ADDRESS} -DSELENIUM_GRID_URL=${SELENIUM_GRID_ADDRESS} test"
+        }
      }
   }	
 
