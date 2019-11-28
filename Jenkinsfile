@@ -149,10 +149,10 @@ pipeline {
                         ]){
                             sh 'kubectl config view'
                             
-                            sh 'kubectl get svc frontend-external -n production   -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > /home/jenkins/agent/workspace/Hipster_master/front_end_address'
+                            sh 'kubectl get svc frontend-external -n production   -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'
 
                             script{
-                              FRONTEND_ADDRESS = readFile('/home/jenkins/agent/workspace/Hipster_master/front_end_address')
+                              FRONTEND_ADDRESS = readFile('front_end_address')
                             }
                             echo "${FRONTEND_ADDRESS}"
                           }
