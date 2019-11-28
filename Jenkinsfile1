@@ -152,7 +152,7 @@ pipeline {
 
                             script{
 
-				if("${GIT_BRANCH") == "staging"
+				if("${GIT_BRANCH") == "staging")
 					sh 'kubectl get svc frontend-external -n staging   -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'	
 				else		
                             		sh 'kubectl get svc frontend-external -n production   -o jsonpath="{.status.loadBalancer.ingress[*].ip}"  > front_end_address'
