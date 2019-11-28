@@ -85,7 +85,7 @@ public class HipsterTest {
 
 		WebElement elem = driver.findElement(By.xpath("/html/body/main/div/div/div[3]/div/strong"));
 		System.out.println(elem.getText());
-		Assert.assertTrue(elem.getText().equals("USD 86.44"));
+		Assert.assertTrue(elem.getText().equals("USD 76.44"));
 
 	}
 
