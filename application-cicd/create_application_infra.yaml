@@ -1,0 +1,22 @@
+steps:
+- id: 'Create cluster'
+  name: 'gcr.io/cloud-builders/gcloud'
+  args: ['beta', 'container', 'clusters', 'create', 'application-infra', '--machine-type=n1-standard-2','--num-nodes=3','--preemptible', '--disk-size=25G','--addons=Istio','--istio-config=auth=MTLS_PERMISSIVE' ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['create', 'namespace','staging' ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=application-infra'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['create', 'namespace','production' ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=application-infra'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['label', 'namespace','production', 'istio-injection=enabled' ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=application-infra'
+

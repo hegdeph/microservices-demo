@@ -1,0 +1,57 @@
+steps:
+- id: 'Create cluster'
+  name: 'gcr.io/cloud-builders/gcloud'
+  args: ['container', 'clusters', 'create', 'cicd-infra', '--machine-type=n1-standard-2','--num-nodes=4','--preemptible', '--disk-size=10G','--service-account=${_SERVICE_ACCOUNT}','--cluster-version=1.12','--scopes=https://www.googleapis.com/auth/cloud-platform' ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['create', 'clusterrolebinding', 'cluster-admin-binding','--clusterrole=cluster-admin','--user=${_SERVICE_ACCOUNT}']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['get', 'pods']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['create', 'serviceaccount', 'tiller','--namespace=kube-system']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['create', 'clusterrolebinding', 'tiller-admin-binding','--clusterrole=cluster-admin','--serviceaccount=kube-system:tiller']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag=gcr.io/$PROJECT_ID/helm', '--build-arg', 'HELM_VERSION=v2.14.0', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/helm']
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['init', '--wait','--service-account=tiller']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['repo', 'update']
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', '--name','jenkins','stable/jenkins', '-f','jenkins-values.yaml','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', '--name','sonarqube','stable/sonarqube','-f', 'sonarqube-values.yaml','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', '--name','selenium-grid','stable/selenium','--set','chrome.enabled=true','--set','firefoxDebug.enabled=true','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', '--name','distributed-jmeter','stable/distributed-jmeter','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'

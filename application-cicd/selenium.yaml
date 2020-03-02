@@ -1,0 +1,23 @@
+steps:
+- name: 'gcr.io/$PROJECT_ID/helm'
+#  args: ['install', 'stable/jenkins', '-f', 'jenkins-values.yaml', '--version',' 1.2.2', '--wait']
+  args: ['install', 'stable/jenkins', '--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', 'stable/sonarqube','-f', 'sonarqube-values.yaml','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  #args: ['install', '--name', 'selenium-grid', '--set',' chromeDebug.enabled=true',' --set',' firefoxDebug.enabled=true','stable/selenium','--wait']
+  args: ['install', 'stable/selenium','--set','chrome.enabled=true','--set','firefoxDebug.enabled=true','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
+- name: 'gcr.io/$PROJECT_ID/helm'
+  args: ['install', '--name','distributed-jmeter','stable/distributed-jmeter','--wait']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-infra'
