@@ -1,3 +1,7 @@
+[[Prasanna Hegde]] This repository makes use hipstershop microservices code. CI/CD pipeline automation is done using Jenkins and other tools like sonarqube, selenium etc. 
+
+Cloudbuild and skaffold is used to build this microservices code. Jenkins calls the cloudbuild which in turn invokes the skaffold.yaml 
+
 # Hipster Shop: Cloud-Native Microservices Demo Application
 
 This project contains a 10-tier microservices application. The application is a
